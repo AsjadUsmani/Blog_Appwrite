@@ -14,6 +14,11 @@ const Login = () => {
 
     const login = async (data) => {
         setError("");
+        const currentUser = await authService.getCurrentUser();
+        if (currentUser) {
+            navigate("/");
+            return;
+        }
         try {
             const session = await authService.login(data);
             if (session) {
@@ -50,21 +55,21 @@ const Login = () => {
             <form onSubmit={handleSubmit(login)} className='mt-8'>
                 <div className='space-y-5'>
                     <Input
-                    placeholder="Enter your email..."
-                    label="Email: "
-                    type="email"
-                    {...register('email', {
-                        required: true,
-                        validate: (value) => /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g.test(value) || "Email address must be a valid address",
-                    })}
+                        placeholder="Enter your email..."
+                        label="Email: "
+                        type="email"
+                        {...register('email', {
+                            required: true,
+                            validate: (value) => /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g.test(value) || "Email address must be a valid address",
+                        })}
                     />
                     <Input
-                    placeholder="Enter your password..."
-                    label="Password: "
-                    type="password"
-                    {...register('password', {
-                        required: true,
-                    })}
+                        placeholder="Enter your password..."
+                        label="Password: "
+                        type="password"
+                        {...register('password', {
+                            required: true,
+                        })}
                     />
                     <Button type="submit" className='w-full'>Sign In</Button>
                 </div>
